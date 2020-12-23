@@ -71,7 +71,7 @@ for (const auto &value : **messages) {
 	std::cout << value << std::endl;
 }
 ```
-##Build and installation instructions
+## Build and installation instructions
 This is a header-only library. Just add ```cpp-frp/include``` as an include directory.
 Tested compilers include
  - ```Visual Studio 2015```
@@ -90,8 +90,8 @@ Note that ```GCC 4``` is not supported.
   * ```./test-coverage.sh``` to generate test coverage statistics. Requires ```lcov```
   * ```gnome-open test-coverage/index.html``` or equivalent to open the generated test coverage data.
 
-##Type requirements
-###Value types
+## Type requirements
+### Value types
 The requirements for value types are as follows:
 
  - Must be *move constructible*
@@ -102,19 +102,19 @@ The requirements for value types are as follows:
 
 The *comparator* is used to suppress redundant updates while traversing the graph.
 
-###Function types
+### Function types
 Functions must implement the ```operator()``` with the argument types relevant. Lambda expressions with ```auto``` type deductions are allowed as seen above. ```std::bind```, function pointers etc works as well.
 
 Functions can return ```void``` for ```transform```, the function will be executed on any dependency changes but the resulting repository becomes a leaf-node and can not be used by any other repository.
 
-####Thread safety
+#### Thread safety
 Functions are expected to have **no side-effects** and only operate on their input arguments. That said, in order to interface with other code that might be a too strict requirement. This library uses atomics to synchronize logic, which means that in theory, at any point, there might be multiple invocations of your function running in parallell. The values returned by functions are guaranteed to arrive in the correct order, the invocation of functions are not.
 
 There are two ways to manage functions with side effects:
  - Specify a single threaded executor with ```execute_on(...)```. This way the execution of your function will be serialized.
  - Use atomics or locks to protect your data. This way you can write thread-safe code while still leveraging multi-thread performance.
 
-###Executor types
+### Executor types
 Executor types must have a signature equivalent to:
 ```C++
 template<typename F>
